@@ -1,0 +1,16 @@
+Author has attributes id(a key; must be unique) and name.
+
+Publication has attributes pid(a key, must be unique), year, fieldsOfStudy, publishedIn, and venue.
+
+Journal has attributes journalid(a key, must be unique), journal name.
+
+There is a one-to-one relationship PublishedIn from Publication to Journals. (Or can one 
+publication be published in more than one journal?)
+
+There is a one-to-many relationship InCitations from Publication to Publication.
+
+There is a one-to-many relationship OutCitations from Publication to Publication.
+
+There is a many-many relationship Authored from Author to Publication.
+
+Some entries are empty for both in and out citations-- should we get rid of those?  
