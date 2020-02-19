@@ -20,12 +20,13 @@ def FillInTable(citation_data,Publications,Authors,Journals,PublishedIn,InCitati
 
 def AddOutCitations(pub,OutCitations):
     try:
-        outCitation = {}
+        
         if len(pub['outCitations'])>0:
             for pid in pub['outCitations']:
+                outCitation = {}
                 outCitation['pid1'] = pub['id']
                 outCitation['pid2'] = pid
-            OutCitations.append(outCitation)
+                OutCitations.append(outCitation)
     except KeyError:
         pass
 
@@ -33,12 +34,13 @@ def AddOutCitations(pub,OutCitations):
 
 def AddInCitations(pub,InCitations):
     try:
-        inCitation = {}
+        
         if len(pub['inCitations'])>0:
             for pid in pub['inCitations']:
+                inCitation = {}
                 inCitation['pid1'] = pub['id']
                 inCitation['pid2'] = pid
-            InCitations.append(inCitation)
+                InCitations.append(inCitation)
     except KeyError:
         pass
 
