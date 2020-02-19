@@ -1,0 +1,22 @@
+1	Deutsche medizinische Wochenschrift
+2	Inpharma Weekly
+3	Strahlentherapie und Onkologie : Organ der Deutschen Rontgengesellschaft ... [et al]
+4	Plant physiology
+5	Royal Society of Health journal
+6	Soins. Pediatrie, puericulture
+7	Proceedings of the Institution of Mechanical Engineers, Part O: Journal of Risk and Reliability
+8	Bulletin de l'Academie nationale de medecine
+9	Journal of Endocrinological Investigation
+10	The British journal of ophthalmology
+11	Bookbird: A Journal of International Children's Literature
+12	Indian Journal of Thoracic and Cardiovascular Surgery
+13	Clinical Drug Investigation
+14	Nanotechnology
+15	Oncologia
+16	Anuario indigenista
+17	Journal of consulting psychology
+18	2016 11th International Forum on Strategic Technology (IFOST)
+19	The Journal of pharmacology and experimental therapeutics
+20	The Journal of clinical psychiatry
+21	2016 7th IEEE International Conference on Software Engineering and Service Science (ICSESS)
+22	The New England journal of medicine
