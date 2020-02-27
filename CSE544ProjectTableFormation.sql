@@ -68,7 +68,7 @@ create or replace table inCitations as
 select pubid::string as pubid, 
 f.value::string as inCitations
 from temp_incitations as t,
-lateral flatten(input => t.inCitations) f;
+lateral flatten(input => t.inCitations, outer => true) f;
 
 drop table temp_incitations;
 alter table inCitations add primary key (pubid);
@@ -76,11 +76,11 @@ alter table inCitations add primary key (pubid);
 create table temp_outcitations as 
 select pubid, parse_json(outCitations) as outCitations from important_data;
 
-create table outCitations as
+create or replace table outCitations as
 select pubid::string as pubid, 
 f.value::string as outCitations
 from temp_outcitations as t,
-lateral flatten(input => t.outCitations) f;
+lateral flatten(input => t.outCitations, outer => true) f;
 
 drop table temp_outcitations;
 alter table out_Citations add primary key (pubid);
