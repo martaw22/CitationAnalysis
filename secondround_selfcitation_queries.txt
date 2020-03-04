@@ -1,0 +1,84 @@
+--alternate way of calculating self-citation
+create or replace table author_selfcite_secondmethod as
+select a1.authid, count(outcitations) as self_cite 
+from outcitations as out1, authored as a1, authored as a2 
+where out1.pubid = a1.pubid and out1.outcitations = a2.pubid and a1.authid = a2.authid
+group by a1.authid;
+
+
+--adding column of all citations in addition to self citations
+create or replace table authors_citations_method2 as
+select author_selfcite_secondmethod.authid, count(outcitations) as all_cite, self_cite 
+from outcitations, authored, author_selfcite_secondmethod  
+where outcitations.pubid = authored.pubid and author_selfcite_secondmethod.authid = authored.authid
+group by author_selfcite_secondmethod.authid, self_cite;
+
+
+--calculating third column of ratio between self and all citations
+create or replace table authors_comp_cite as
+select a1.authid, a1.all_cite, a1.self_cite, a1.self_cite/a1.all_cite as ratio
+from authors_citations_method2 as a1;
+
+
+--calculating all averages
+select avg(self_cite), avg(all_cite), avg(ratio) from authors_comp_cite;
+
+
+--get fields of study values
+select fieldofstudy, journalname, venue, self_cite, all_cite, ratio 
+from authors_comp_cite, authored, publication2 
+where authors_comp_cite.authid = authored.authid and authored.pubid = publication2.pubid
+order by fieldofstudy, journalname, venue;
+
+--getting self citation per author with year
+create or replace table auth_citation_withyear as
+select a1.authid, min(publication2.year) as minyear, a1.all_cite, a1.self_cite, a1.ratio
+from authored, publication2, authors_comp_cite as a1
+where authored.pubid = publication2.pubid and a1.authid = authored.authid
+group by a1.authid, all_cite, self_cite, ratio
+order by min(year);
+
+
+
+--get self citations per paper instead of per author
+create or replace table pub_selfcite_secondmethod as
+select a1.pubid, count(outcitations) as self_cite 
+from outcitations as out1, authored as a1, authored as a2 
+where out1.pubid = a1.pubid and out1.outcitations = a2.pubid and a1.authid = a2.authid
+group by a1.pubid;
+
+--adding second column of all citations to citations per paper
+create or replace table pub_citations_method2 as
+select pub_selfcite_secondmethod.pubid, count(outcitations) as all_cite, self_cite 
+from outcitations, authored, pub_selfcite_secondmethod  
+where outcitations.pubid = authored.pubid and pub_selfcite_secondmethod.pubid = authored.pubid
+group by pub_selfcite_secondmethod.pubid, self_cite;
+
+--Adding third column of ratio to citations per paper
+create or replace table pub_comp_cite as
+select a1.pubid, a1.all_cite, a1.self_cite, a1.self_cite/a1.all_cite as ratio
+from pub_citations_method2 as a1;
+
+--averages of citations per paper
+select avg(self_cite), avg(all_cite), avg(ratio) from pub_comp_cite;
+
+--averages of citations per paper per journal
+select journalname, avg(self_cite), avg(all_cite), avg(ratio) 
+from pub_comp_cite, publication2
+where pub_comp_cite.pubid = publication2.pubid
+group by journalname;
+
+select journalname, avg(self_cite), avg(all_cite), avg(ratio), count(publication2.pubid)
+from pub_comp_cite, publication2
+where pub_comp_cite.pubid = publication2.pubid
+group by journalname
+order by count(publication2.pubid) desc
+limit 51;
+
+
+--averages of citations per venue
+select venue, avg(self_cite), avg(all_cite), avg(ratio) 
+from pub_comp_cite, publication2
+where pub_comp_cite.pubid = publication2.pubid
+group by venue
+order by avg(ratio), avg(all_cite);
